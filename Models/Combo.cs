@@ -1,5 +1,5 @@
 namespace Models;
-using models;
+using Models;
 
 
 public class Combo : Producto
