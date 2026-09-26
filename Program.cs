@@ -110,3 +110,23 @@ if (!hayProductos)
 {
     Console.WriteLine($"No existe ningún producto que cueste menos de {rangoPrecio}");
 }
+
+//Localizar el producto más caro de la carta
+decimal precioMaximo=0;
+
+foreach(var producto in productosCarta)
+{
+    if(producto.Precio > precioMaximo)
+    {
+        precioMaximo = producto.Precio;
+    }
+}
+
+Console.WriteLine("El producto más caro es: ");
+foreach(var producto in productosCarta)
+{
+    if(producto.Precio == precioMaximo)
+    {
+        producto.MostrarDescripcion();
+    }
+}
