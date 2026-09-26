@@ -22,6 +22,17 @@ Postre tarta3Chocolates = new Postre("Tarta 3 chocolates", 15.45m, ["Leche", "Ga
 
 List<Producto> productosCarta = [patatasBravas, nachos, pizza, hamburguesa, agua, cocaCola, tartaQueso, tarta3Chocolates];
 
+//Filtrado de productos
+Console.WriteLine("=== CARTA BEBIDAS ===");
+foreach(var producto in productosCarta)
+{
+    if(producto is Bebida)
+    {
+        producto.MostrarDescripcion();
+    }
+}
+
+//Mostrar carta enumerada
 Console.WriteLine("=== CARTA RESTAURANTE ===");
 Console.WriteLine("    PLATO      PRECIO");
 Console.WriteLine("-------------------------");
@@ -33,12 +44,23 @@ foreach (var producto in productosCarta)
     contador++;
 }
 
-//Filtrado de productos
-Console.WriteLine("=== CARTA BEBIDAS ===");
-foreach(var producto in productosCarta)
+//Seleccionar producto de la carta
+int opcion;
+Console.Write("¿Qué producto quieres?");
+
+if(int.TryParse(Console.ReadLine(),out opcion))
 {
-    if(producto is Bebida)
+    if(0 < opcion && opcion <= productosCarta.Count)
     {
-        producto.MostrarDescripcion();
+        Console.WriteLine($"Has elegido:");
+        productosCarta[opcion-1].MostrarDescripcion();
     }
+    else
+    {
+        Console.WriteLine("Ese producto no existe");
+    }
+}
+else
+{
+    Console.WriteLine("Debes introducir un número de la carta");
 }
