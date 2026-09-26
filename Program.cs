@@ -46,6 +46,7 @@ foreach (var producto in productosCarta)
 
 //Seleccionar producto de la carta
 int opcion;
+Console.WriteLine("=== Búsqueda por número ===");
 Console.Write("¿Qué producto quieres?");
 
 if(int.TryParse(Console.ReadLine(),out opcion))
@@ -66,6 +67,7 @@ else
 }
 
 //Busqueda de un producto por su nombre
+Console.WriteLine("=== Búsqueda por nombre ===");
 Console.WriteLine("¿Qué producto desea buscar? Introduzca el nombre: " );
 string nombreProducto = Console.ReadLine().ToLower().Trim();
 bool productoEncontrado = false;
@@ -82,4 +84,29 @@ foreach(var producto in productosCarta)
 if (!productoEncontrado)
 {
     Console.WriteLine("No se ha encontrado el producto");
+}
+
+//Mostrar productos por un rango de precio
+decimal rangoPrecio;
+bool hayProductos = false;
+
+Console.WriteLine("=== Búsqueda por precio máximo ===");
+Console.WriteLine("Introduce el precio máximo de la búsqueda: ");
+
+if(decimal.TryParse(Console.ReadLine(), out rangoPrecio))
+{
+    Console.WriteLine($"=== Productos encontrados (hasta {rangoPrecio}€) ===");
+    foreach(var producto in productosCarta)
+    {
+        if(producto.Precio <= rangoPrecio)
+        {
+            producto.MostrarDescripcion();
+            hayProductos= true;
+        }
+    }
+}
+
+if (!hayProductos)
+{
+    Console.WriteLine($"No existe ningún producto que cueste menos de {rangoPrecio}");
 }
