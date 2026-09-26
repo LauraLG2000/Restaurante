@@ -19,6 +19,7 @@ public class Bebida : Producto
     public override void MostrarDescripcion()
     {
         string Alcoholica = isAlcoholica ? "Sí" : "No";
-        Console.WriteLine($"Bebida - Nombre: {Nombre} - Precio: {Precio} - Ingredientes:{Ingredientes} - Alcoholica:{Alcoholica}");
+        string listaIngredientes = string.Join(", ", Ingredientes);
+        Console.WriteLine($"Bebida - Nombre: {Nombre} - Precio: {Precio} - Ingredientes: {listaIngredientes} - Alcoholica:{Alcoholica}");
     }
 }

@@ -21,6 +21,7 @@ public class Entrante : Producto
     public override void MostrarDescripcion()
     {
         string entranteCaliente = isCaliente ? "Sí": "No";
-        Console.WriteLine($"Entrante - Nombre: {Nombre} - Precio: {Precio} - Ingredientes:{Ingredientes} - Cantidad de Personas:{CantidadPersonas} - Se sirve caliente:{entranteCaliente}");
+        string listaIngredientes = string.Join(", ", Ingredientes);
+        Console.WriteLine($"Entrante - Nombre: {Nombre} - Precio: {Precio} - Ingredientes: {listaIngredientes} - Cantidad de Personas:{CantidadPersonas} - Se sirve caliente:{entranteCaliente}");
     }
 }

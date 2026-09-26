@@ -14,7 +14,8 @@ public class PlatoPrincipal : Producto
     }
 
     public override void MostrarDescripcion()
-    {
-        Console.WriteLine($"Plato Principal - Nombre: {Nombre} - Precio: {Precio} - Ingredientes:{Ingredientes}");
+    {  
+        string listaIngredientes = string.Join(", ", Ingredientes);
+        Console.WriteLine($"Plato Principal - Nombre: {Nombre} - Precio: {Precio} - Ingredientes: {listaIngredientes}");
     }
 }

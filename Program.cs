@@ -32,3 +32,13 @@ foreach (var producto in productosCarta)
     Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}€");
     contador++;
 }
+
+//Filtrado de productos
+Console.WriteLine("=== CARTA BEBIDAS ===");
+foreach(var producto in productosCarta)
+{
+    if(producto is Bebida)
+    {
+        producto.MostrarDescripcion();
+    }
+}
