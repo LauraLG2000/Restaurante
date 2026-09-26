@@ -64,3 +64,22 @@ else
 {
     Console.WriteLine("Debes introducir un número de la carta");
 }
+
+//Busqueda de un producto por su nombre
+Console.WriteLine("¿Qué producto desea buscar? Introduzca el nombre: " );
+string nombreProducto = Console.ReadLine().ToLower().Trim();
+bool productoEncontrado = false;
+
+foreach(var producto in productosCarta)
+{
+    if(producto.Nombre.ToLower().Trim() == nombreProducto)
+    {
+        producto.MostrarDescripcion();
+        productoEncontrado = true;
+    }
+}
+
+if (!productoEncontrado)
+{
+    Console.WriteLine("No se ha encontrado el producto");
+}
