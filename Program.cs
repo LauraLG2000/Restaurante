@@ -25,7 +25,10 @@ List<Producto> productosCarta = [patatasBravas, nachos, pizza, hamburguesa, agua
 Console.WriteLine("=== CARTA RESTAURANTE ===");
 Console.WriteLine("    PLATO      PRECIO");
 Console.WriteLine("-------------------------");
+
+int contador = 1;
 foreach (var producto in productosCarta)
 {
-    Console.WriteLine($"{producto.Nombre} - {producto.Precio}€");
+    Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}€");
+    contador++;
 }
