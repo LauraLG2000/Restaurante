@@ -24,109 +24,178 @@ List<Producto> productosCarta = [patatasBravas, nachos, pizza, hamburguesa, agua
 
 //Filtrado de productos
 Console.WriteLine("=== CARTA BEBIDAS ===");
-foreach(var producto in productosCarta)
+foreach (var producto in productosCarta)
 {
-    if(producto is Bebida)
+    if (producto is Bebida)
     {
         producto.MostrarDescripcion();
     }
 }
 
-//Mostrar carta enumerada
-Console.WriteLine("=== CARTA RESTAURANTE ===");
-Console.WriteLine("    PLATO      PRECIO");
-Console.WriteLine("-------------------------");
-
-int contador = 1;
-foreach (var producto in productosCarta)
+int opcionCarta = 0;
+do
 {
-    Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}€");
-    contador++;
+    Console.WriteLine("=====================");
+    Console.WriteLine("     RESTAURANTE     ");
+    Console.WriteLine("");
+    Console.WriteLine("1. Ver carta");
+    Console.WriteLine("2. Elegir Producto por número");
+    Console.WriteLine("3. Buscar Producto por nombre");
+    Console.WriteLine("4. Buscar Productos por precio");
+    Console.WriteLine("5. Buscar Producto más caro");
+    Console.WriteLine("0. Cerrar programa");
+    Console.WriteLine("");
+    Console.WriteLine("Elige una opción");
+
+    if (int.TryParse(Console.ReadLine(), out opcionCarta))
+    {
+        switch (opcionCarta)
+        {
+            case 0:
+                Console.WriteLine("Programa cerrado");
+                break;
+                
+            case 1:
+                MostrarCarta(productosCarta);
+                break;
+
+            case 2:
+                BuscarProductoPorNumero(productosCarta);
+                break;
+
+            case 3:
+                BuscarProductoPorNombre(productosCarta);
+                break;
+
+            case 4: 
+                BuscarProductosPorRangoPrecio(productosCarta);
+                break;
+
+            case 5:
+                BuscarProductoMasCaro(productosCarta);
+                break;
+
+            default:
+                Console.WriteLine("Introduce una opción válida");
+                break;        
+
+        }
+    }
+} while (opcionCarta != 0);
+
+//MÉTODOS
+//Mostrar carta enumerada
+void MostrarCarta(List<Producto> listaProductos)
+{
+    Console.WriteLine("=== CARTA RESTAURANTE ===");
+    Console.WriteLine("    PLATO      PRECIO");
+    Console.WriteLine("-------------------------");
+
+    int contador = 1;
+    foreach (var producto in productosCarta)
+    {
+        Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}€");
+        contador++;
+    }
 }
 
-//Seleccionar producto de la carta
-int opcion;
-Console.WriteLine("=== Búsqueda por número ===");
-Console.Write("¿Qué producto quieres?");
 
-if(int.TryParse(Console.ReadLine(),out opcion))
+//Seleccionar producto de la carta
+void BuscarProductoPorNumero(List<Producto> listaProductos)
 {
-    if(0 < opcion && opcion <= productosCarta.Count)
+    int opcion;
+    Console.WriteLine("=== Búsqueda por número ===");
+    Console.Write("¿Qué producto quieres?");
+
+    if (int.TryParse(Console.ReadLine(), out opcion))
     {
-        Console.WriteLine($"Has elegido:");
-        productosCarta[opcion-1].MostrarDescripcion();
+        if (0 < opcion && opcion <= productosCarta.Count)
+        {
+            Console.WriteLine($"Has elegido:");
+            productosCarta[opcion - 1].MostrarDescripcion();
+        }
+        else
+        {
+            Console.WriteLine("Ese producto no existe");
+        }
     }
     else
     {
-        Console.WriteLine("Ese producto no existe");
+        Console.WriteLine("Debes introducir un número de la carta");
     }
 }
-else
-{
-    Console.WriteLine("Debes introducir un número de la carta");
-}
+
 
 //Busqueda de un producto por su nombre
-Console.WriteLine("=== Búsqueda por nombre ===");
-Console.WriteLine("¿Qué producto desea buscar? Introduzca el nombre: " );
-string nombreProducto = Console.ReadLine().ToLower().Trim();
-bool productoEncontrado = false;
-
-foreach(var producto in productosCarta)
+void BuscarProductoPorNombre(List<Producto> listaProductos)
 {
-    if(producto.Nombre.ToLower().Trim() == nombreProducto)
+    Console.WriteLine("=== Búsqueda por nombre ===");
+    Console.WriteLine("¿Qué producto desea buscar? Introduzca el nombre: ");
+    string nombreProducto = Console.ReadLine().ToLower().Trim();
+    bool productoEncontrado = false;
+
+    foreach (var producto in productosCarta)
     {
-        producto.MostrarDescripcion();
-        productoEncontrado = true;
+        if (producto.Nombre.ToLower().Trim() == nombreProducto)
+        {
+            producto.MostrarDescripcion();
+            productoEncontrado = true;
+        }
     }
-}
 
-if (!productoEncontrado)
-{
-    Console.WriteLine("No se ha encontrado el producto");
+    if (!productoEncontrado)
+    {
+        Console.WriteLine("No se ha encontrado el producto");
+    }
 }
 
 //Mostrar productos por un rango de precio
-decimal rangoPrecio;
-bool hayProductos = false;
-
-Console.WriteLine("=== Búsqueda por precio máximo ===");
-Console.WriteLine("Introduce el precio máximo de la búsqueda: ");
-
-if(decimal.TryParse(Console.ReadLine(), out rangoPrecio))
+void BuscarProductosPorRangoPrecio(List<Producto> listaProductos)
 {
-    Console.WriteLine($"=== Productos encontrados (hasta {rangoPrecio}€) ===");
-    foreach(var producto in productosCarta)
+    decimal rangoPrecio;
+    bool hayProductos = false;
+
+    Console.WriteLine("=== Búsqueda por precio máximo ===");
+    Console.WriteLine("Introduce el precio máximo de la búsqueda: ");
+
+    if (decimal.TryParse(Console.ReadLine(), out rangoPrecio))
     {
-        if(producto.Precio <= rangoPrecio)
+        Console.WriteLine($"=== Productos encontrados (hasta {rangoPrecio}€) ===");
+        foreach (var producto in productosCarta)
         {
-            producto.MostrarDescripcion();
-            hayProductos= true;
+            if (producto.Precio <= rangoPrecio)
+            {
+                producto.MostrarDescripcion();
+                hayProductos = true;
+            }
         }
     }
-}
 
-if (!hayProductos)
-{
-    Console.WriteLine($"No existe ningún producto que cueste menos de {rangoPrecio}");
+    if (!hayProductos)
+    {
+        Console.WriteLine($"No existe ningún producto que cueste menos de {rangoPrecio}");
+    }
 }
 
 //Localizar el producto más caro de la carta
-decimal precioMaximo=0;
-
-foreach(var producto in productosCarta)
+void BuscarProductoMasCaro(List<Producto> listaProductos)
 {
-    if(producto.Precio > precioMaximo)
+    decimal precioMaximo = 0;
+
+    foreach (var producto in productosCarta)
     {
-        precioMaximo = producto.Precio;
+        if (producto.Precio > precioMaximo)
+        {
+            precioMaximo = producto.Precio;
+        }
     }
-}
 
-Console.WriteLine("El producto más caro es: ");
-foreach(var producto in productosCarta)
-{
-    if(producto.Precio == precioMaximo)
+    Console.WriteLine("El producto más caro es: ");
+    foreach (var producto in productosCarta)
     {
-        producto.MostrarDescripcion();
+        if (producto.Precio == precioMaximo)
+        {
+            producto.MostrarDescripcion();
+        }
     }
 }
