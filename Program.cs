@@ -32,17 +32,18 @@ foreach (var producto in productosCarta)
     }
 }
 
-int opcionCarta = 0;
+int opcionCarta;
+List<Producto> pedido = new List<Producto>();
 do
 {
     Console.WriteLine("=====================");
     Console.WriteLine("     RESTAURANTE     ");
     Console.WriteLine("");
     Console.WriteLine("1. Ver carta");
-    Console.WriteLine("2. Elegir Producto por número");
-    Console.WriteLine("3. Buscar Producto por nombre");
-    Console.WriteLine("4. Buscar Productos por precio");
-    Console.WriteLine("5. Buscar Producto más caro");
+    Console.WriteLine("2. Añadir producto al pedido");
+    Console.WriteLine("3. Ver pedido");
+    Console.WriteLine("4. Buscar producto");
+    Console.WriteLine("5. Productos por precio");
     Console.WriteLine("0. Cerrar programa");
     Console.WriteLine("");
     Console.WriteLine("Elige una opción");
@@ -54,20 +55,22 @@ do
             case 0:
                 Console.WriteLine("Programa cerrado");
                 break;
-                
+
             case 1:
+                Console.WriteLine("===============");
+                Console.WriteLine("     CARTA     ");
                 MostrarCarta(productosCarta);
                 break;
 
             case 2:
-                BuscarProductoPorNumero(productosCarta);
+                AgregarProductoAlPedido(productosCarta, pedido);
                 break;
 
             case 3:
                 BuscarProductoPorNombre(productosCarta);
                 break;
 
-            case 4: 
+            case 4:
                 BuscarProductosPorRangoPrecio(productosCarta);
                 break;
 
@@ -77,7 +80,7 @@ do
 
             default:
                 Console.WriteLine("Introduce una opción válida");
-                break;        
+                break;
 
         }
     }
@@ -99,30 +102,44 @@ void MostrarCarta(List<Producto> listaProductos)
     }
 }
 
+//Método para agregar un producto al pedido
+void AgregarProductoAlPedido(List<Producto> carta, List<Producto> pedido)
+{
+    Console.WriteLine("===============");
+    Console.WriteLine("     CARTA     ");
+    MostrarCarta(carta);
+
+    pedido.Add(BuscarProductoPorNumero(carta));
+}
 
 //Seleccionar producto de la carta
-void BuscarProductoPorNumero(List<Producto> listaProductos)
+Producto BuscarProductoPorNumero(List<Producto> listaProductos)
 {
     int opcion;
-    Console.WriteLine("=== Búsqueda por número ===");
-    Console.Write("¿Qué producto quieres?");
-
-    if (int.TryParse(Console.ReadLine(), out opcion))
+    Producto productoEncontrado = null;
+    do
     {
-        if (0 < opcion && opcion <= productosCarta.Count)
+        Console.Write("¿Qué producto quieres? Introduce el número: ");
+
+        if (int.TryParse(Console.ReadLine(), out opcion))
         {
-            Console.WriteLine($"Has elegido:");
-            productosCarta[opcion - 1].MostrarDescripcion();
+            if (0 < opcion && opcion <= listaProductos.Count)
+            {
+                Console.WriteLine($"Producto {listaProductos[opcion - 1].Nombre} añadido al pedido.");
+                productoEncontrado = listaProductos[opcion - 1];
+            }
+            else
+            {
+                Console.WriteLine("Ese producto no existe en la carta.");
+            }
         }
         else
         {
-            Console.WriteLine("Ese producto no existe");
+            Console.WriteLine("Debes introducir un número de la carta");
         }
-    }
-    else
-    {
-        Console.WriteLine("Debes introducir un número de la carta");
-    }
+    } while (0 >= opcion || opcion > listaProductos.Count);
+
+    return productoEncontrado;
 }
 
 
