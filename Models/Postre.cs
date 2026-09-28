@@ -19,6 +19,7 @@ public class Postre : Producto
     public override void MostrarDescripcion()
     {
         string SugarFree = isSugarFree ? "Sí" : "No";
-        Console.WriteLine($"Postre - Nombre: {Nombre} - Precio: {Precio} - Ingredientes:{Ingredientes} - Calorias:{Calorias} - Sin Azúcar:{SugarFree}");
+        string listaIngredientes = string.Join(", ", Ingredientes);
+        Console.WriteLine($"Postre - Nombre: {Nombre} - Precio: {Precio} - Ingredientes: {listaIngredientes} - Calorias:{Calorias} - Sin Azúcar:{SugarFree}");
     }
 }
