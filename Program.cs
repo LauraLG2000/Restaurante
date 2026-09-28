@@ -36,8 +36,8 @@ int opcionCarta;
 List<Producto> pedido = new List<Producto>();
 do
 {
-    Console.WriteLine("=====================");
     Console.WriteLine("     RESTAURANTE     ");
+    Console.WriteLine("---------------------");
     Console.WriteLine("");
     Console.WriteLine("1. Ver carta");
     Console.WriteLine("2. Añadir producto al pedido");
@@ -57,8 +57,9 @@ do
                 break;
 
             case 1:
-                Console.WriteLine("===============");
                 Console.WriteLine("     CARTA     ");
+                Console.WriteLine("---------------");
+                Console.WriteLine("");
                 MostrarCarta(productosCarta);
                 break;
 
@@ -67,7 +68,7 @@ do
                 break;
 
             case 3:
-                BuscarProductoPorNombre(productosCarta);
+                MostrarPedido(pedido);
                 break;
 
             case 4:
@@ -105,8 +106,8 @@ void MostrarCarta(List<Producto> listaProductos)
 //Método para agregar un producto al pedido
 void AgregarProductoAlPedido(List<Producto> carta, List<Producto> pedido)
 {
-    Console.WriteLine("===============");
     Console.WriteLine("     CARTA     ");
+    Console.WriteLine("---------------");
     MostrarCarta(carta);
 
     pedido.Add(BuscarProductoPorNumero(carta));
@@ -142,11 +143,39 @@ Producto BuscarProductoPorNumero(List<Producto> listaProductos)
     return productoEncontrado;
 }
 
+//Mostrar el pedido
+void MostrarPedido(List<Producto> pedido)
+{
+    decimal totalPrecio = 0;
+
+    if (pedido.Count != 0)
+    {
+        Console.WriteLine("     PEDIDO     ");
+        Console.WriteLine("----------------");
+        Console.WriteLine("");
+
+        foreach (var producto in pedido)
+        {
+            Console.WriteLine($"{producto.Nombre} - {producto.Precio}€");
+            totalPrecio += producto.Precio;
+        }
+
+        Console.WriteLine("");
+        Console.WriteLine("----------------------");
+        Console.WriteLine($"TOTAL:  {totalPrecio}€");
+        Console.WriteLine("");
+    }
+    else
+    {
+        Console.WriteLine("El pedido está vacío");
+        Console.WriteLine("");
+    }
+}
 
 //Busqueda de un producto por su nombre
 void BuscarProductoPorNombre(List<Producto> listaProductos)
 {
-    Console.WriteLine("=== Búsqueda por nombre ===");
+    Console.WriteLine("=== Búsqueda producto por nombre ===");
     Console.WriteLine("¿Qué producto desea buscar? Introduzca el nombre: ");
     string nombreProducto = Console.ReadLine().ToLower().Trim();
     bool productoEncontrado = false;
