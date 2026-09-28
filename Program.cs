@@ -36,6 +36,7 @@ int opcionCarta;
 List<Producto> pedido = new List<Producto>();
 do
 {
+    Console.WriteLine("");
     Console.WriteLine("     RESTAURANTE     ");
     Console.WriteLine("---------------------");
     Console.WriteLine("");
@@ -43,8 +44,9 @@ do
     Console.WriteLine("2. Añadir producto al pedido");
     Console.WriteLine("3. Ver pedido");
     Console.WriteLine("4. Eliminar producto del pedido");
-    Console.WriteLine("5. Buscar producto por su nombre");
-    Console.WriteLine("6. Productos por precio");
+    Console.WriteLine("5. Finalizar pedido");
+    Console.WriteLine("6. Buscar producto por su nombre");
+    Console.WriteLine("7. Productos por precio");
     Console.WriteLine("0. Cerrar programa");
     Console.WriteLine("");
     Console.WriteLine("Elige una opción");
@@ -77,10 +79,14 @@ do
                 break;
 
             case 5:
-                BuscarProductoPorNombre(productosCarta);
+                FinalizarPedido(pedido);
                 break;
 
             case 6:
+                BuscarProductoPorNombre(productosCarta);
+                break;
+
+            case 7:
                 BuscarProductoMasCaro(productosCarta);
                 break;
 
@@ -170,7 +176,6 @@ void MostrarPedido(List<Producto> pedido)
         Console.WriteLine("");
         Console.WriteLine("----------------------");
         Console.WriteLine($"TOTAL:  {totalPrecio}€");
-        Console.WriteLine("");
     }
     else
     {
@@ -179,7 +184,7 @@ void MostrarPedido(List<Producto> pedido)
     }
 }
 
-//Método Eliminar producto de la carta
+//Método Eliminar producto del pedido
 void EliminarProductoDelPedido(List<Producto> pedido)
 {
     int opcion;
@@ -195,7 +200,7 @@ void EliminarProductoDelPedido(List<Producto> pedido)
 
         if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= pedido.Count)
         {
-            Console.WriteLine($"Producto {pedido[opcion-1].Nombre} eliminado con éxito");
+            Console.WriteLine($"Producto {pedido[opcion - 1].Nombre} eliminado con éxito");
             pedido.RemoveAt(opcion - 1);
         }
         else
@@ -203,6 +208,31 @@ void EliminarProductoDelPedido(List<Producto> pedido)
             Console.WriteLine("Número incorrecto");
         }
     }
+}
+
+//Finalizar pedido
+void FinalizarPedido(List<Producto> pedido)
+{
+    decimal totalPedido = 0;
+
+    if (pedido.Count != 0)
+    {
+        foreach (var producto in pedido)
+        {
+            totalPedido += producto.Precio;
+        }
+
+        MostrarPedido(pedido);
+        Console.WriteLine($"Productos:      {pedido.Count}");
+
+        Console.WriteLine("Gracias por su visita");
+        pedido.Clear();
+    }
+    else
+    {
+        Console.WriteLine("El pedido está vacío, no se puede generar el ticket.");
+    }
+
 }
 
 //Busqueda de un producto por su nombre
