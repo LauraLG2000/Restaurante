@@ -32,17 +32,21 @@ foreach (var producto in productosCarta)
     }
 }
 
-int opcionCarta = 0;
+int opcionCarta;
+List<Producto> pedido = new List<Producto>();
 do
 {
-    Console.WriteLine("=====================");
+    Console.WriteLine("");
     Console.WriteLine("     RESTAURANTE     ");
+    Console.WriteLine("---------------------");
     Console.WriteLine("");
     Console.WriteLine("1. Ver carta");
-    Console.WriteLine("2. Elegir Producto por número");
-    Console.WriteLine("3. Buscar Producto por nombre");
-    Console.WriteLine("4. Buscar Productos por precio");
-    Console.WriteLine("5. Buscar Producto más caro");
+    Console.WriteLine("2. Añadir producto al pedido");
+    Console.WriteLine("3. Ver pedido");
+    Console.WriteLine("4. Eliminar producto del pedido");
+    Console.WriteLine("5. Finalizar pedido");
+    Console.WriteLine("6. Buscar producto por su nombre");
+    Console.WriteLine("7. Productos por precio");
     Console.WriteLine("0. Cerrar programa");
     Console.WriteLine("");
     Console.WriteLine("Elige una opción");
@@ -54,30 +58,41 @@ do
             case 0:
                 Console.WriteLine("Programa cerrado");
                 break;
-                
+
             case 1:
+                Console.WriteLine("     CARTA     ");
+                Console.WriteLine("---------------");
+                Console.WriteLine("");
                 MostrarCarta(productosCarta);
                 break;
 
             case 2:
-                BuscarProductoPorNumero(productosCarta);
+                AgregarProductoAlPedido(productosCarta, pedido);
                 break;
 
             case 3:
-                BuscarProductoPorNombre(productosCarta);
+                MostrarPedido(pedido);
                 break;
 
-            case 4: 
-                BuscarProductosPorRangoPrecio(productosCarta);
+            case 4:
+                EliminarProductoDelPedido(pedido);
                 break;
 
             case 5:
+                FinalizarPedido(pedido);
+                break;
+
+            case 6:
+                BuscarProductoPorNombre(productosCarta);
+                break;
+
+            case 7:
                 BuscarProductoMasCaro(productosCarta);
                 break;
 
             default:
                 Console.WriteLine("Introduce una opción válida");
-                break;        
+                break;
 
         }
     }
@@ -92,49 +107,143 @@ void MostrarCarta(List<Producto> listaProductos)
     Console.WriteLine("-------------------------");
 
     int contador = 1;
-    foreach (var producto in productosCarta)
+    foreach (var producto in listaProductos)
     {
         Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}€");
         contador++;
     }
 }
 
+//Método para agregar un producto al pedido
+void AgregarProductoAlPedido(List<Producto> carta, List<Producto> pedido)
+{
+    Console.WriteLine("     CARTA     ");
+    Console.WriteLine("---------------");
+    MostrarCarta(carta);
+
+    pedido.Add(BuscarProductoPorNumero(carta));
+}
 
 //Seleccionar producto de la carta
-void BuscarProductoPorNumero(List<Producto> listaProductos)
+Producto BuscarProductoPorNumero(List<Producto> listaProductos)
 {
     int opcion;
-    Console.WriteLine("=== Búsqueda por número ===");
-    Console.Write("¿Qué producto quieres?");
-
-    if (int.TryParse(Console.ReadLine(), out opcion))
+    Producto productoEncontrado = null;
+    do
     {
-        if (0 < opcion && opcion <= productosCarta.Count)
+        Console.Write("¿Qué producto quieres? Introduce el número: ");
+
+        if (int.TryParse(Console.ReadLine(), out opcion))
         {
-            Console.WriteLine($"Has elegido:");
-            productosCarta[opcion - 1].MostrarDescripcion();
+            if (0 < opcion && opcion <= listaProductos.Count)
+            {
+                Console.WriteLine($"Producto {listaProductos[opcion - 1].Nombre} añadido al pedido.");
+                productoEncontrado = listaProductos[opcion - 1];
+            }
+            else
+            {
+                Console.WriteLine("Ese producto no existe en la carta.");
+            }
         }
         else
         {
-            Console.WriteLine("Ese producto no existe");
+            Console.WriteLine("Debes introducir un número de la carta");
         }
+    } while (0 >= opcion || opcion > listaProductos.Count);
+
+    return productoEncontrado;
+}
+
+//Mostrar el pedido
+void MostrarPedido(List<Producto> pedido)
+{
+    decimal totalPrecio = 0;
+    int contador = 1;
+
+    if (pedido.Count != 0)
+    {
+        Console.WriteLine("     PEDIDO     ");
+        Console.WriteLine("----------------");
+        Console.WriteLine("");
+
+        foreach (var producto in pedido)
+        {
+            Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}€");
+            totalPrecio += producto.Precio;
+            contador++;
+        }
+
+        Console.WriteLine("");
+        Console.WriteLine("----------------------");
+        Console.WriteLine($"TOTAL:  {totalPrecio}€");
     }
     else
     {
-        Console.WriteLine("Debes introducir un número de la carta");
+        Console.WriteLine("El pedido está vacío");
+        Console.WriteLine("");
     }
 }
 
+//Método Eliminar producto del pedido
+void EliminarProductoDelPedido(List<Producto> pedido)
+{
+    int opcion;
+
+    if (pedido.Count == 0)
+    {
+        Console.WriteLine("No hay productos en el pedido");
+    }
+    else
+    {
+        MostrarPedido(pedido);
+        Console.WriteLine("¿Qué producto quieres eliminar?");
+
+        if (int.TryParse(Console.ReadLine(), out opcion) && opcion >= 1 && opcion <= pedido.Count)
+        {
+            Console.WriteLine($"Producto {pedido[opcion - 1].Nombre} eliminado con éxito");
+            pedido.RemoveAt(opcion - 1);
+        }
+        else
+        {
+            Console.WriteLine("Número incorrecto");
+        }
+    }
+}
+
+//Finalizar pedido
+void FinalizarPedido(List<Producto> pedido)
+{
+    decimal totalPedido = 0;
+
+    if (pedido.Count != 0)
+    {
+        foreach (var producto in pedido)
+        {
+            totalPedido += producto.Precio;
+        }
+
+        MostrarPedido(pedido);
+        Console.WriteLine($"Productos:      {pedido.Count}");
+
+        Console.WriteLine("Gracias por su visita");
+        pedido.Clear();
+    }
+    else
+    {
+        Console.WriteLine("El pedido está vacío, no se puede generar el ticket.");
+    }
+
+}
 
 //Busqueda de un producto por su nombre
 void BuscarProductoPorNombre(List<Producto> listaProductos)
 {
-    Console.WriteLine("=== Búsqueda por nombre ===");
+    Console.WriteLine("=== Búsqueda producto por nombre ===");
     Console.WriteLine("¿Qué producto desea buscar? Introduzca el nombre: ");
     string nombreProducto = Console.ReadLine().ToLower().Trim();
     bool productoEncontrado = false;
 
-    foreach (var producto in productosCarta)
+    foreach (var producto in listaProductos)
     {
         if (producto.Nombre.ToLower().Trim() == nombreProducto)
         {
@@ -182,7 +291,7 @@ void BuscarProductoMasCaro(List<Producto> listaProductos)
 {
     decimal precioMaximo = 0;
 
-    foreach (var producto in productosCarta)
+    foreach (var producto in listaProductos)
     {
         if (producto.Precio > precioMaximo)
         {
@@ -191,7 +300,7 @@ void BuscarProductoMasCaro(List<Producto> listaProductos)
     }
 
     Console.WriteLine("El producto más caro es: ");
-    foreach (var producto in productosCarta)
+    foreach (var producto in listaProductos)
     {
         if (producto.Precio == precioMaximo)
         {
