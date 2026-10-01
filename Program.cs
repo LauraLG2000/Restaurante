@@ -47,6 +47,7 @@ do
     Console.WriteLine("5. Finalizar pedido");
     Console.WriteLine("6. Buscar producto por su nombre");
     Console.WriteLine("7. Productos por precio");
+    Console.WriteLine("8. Producto más caro");
     Console.WriteLine("0. Cerrar programa");
     Console.WriteLine("");
     Console.WriteLine("Elige una opción");
@@ -87,6 +88,10 @@ do
                 break;
 
             case 7:
+                BuscarProductosPorRangoPrecio(productosCarta);
+                break;    
+
+            case 8:
                 BuscarProductoMasCaro(productosCarta);
                 break;
 
@@ -97,6 +102,8 @@ do
         }
     }
 } while (opcionCarta != 0);
+
+Console.WriteLine("¡Gracias por su visita, vuelva pronto!");
 
 //MÉTODOS
 //Mostrar carta enumerada
@@ -270,7 +277,7 @@ void BuscarProductosPorRangoPrecio(List<Producto> listaProductos)
     if (decimal.TryParse(Console.ReadLine(), out rangoPrecio))
     {
         Console.WriteLine($"=== Productos encontrados (hasta {rangoPrecio}€) ===");
-        foreach (var producto in productosCarta)
+        foreach (var producto in listaProductos)
         {
             if (producto.Precio <= rangoPrecio)
             {
