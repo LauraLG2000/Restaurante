@@ -1,10 +1,12 @@
 using Models;
+using Utils;
 public class MenuPedido
 {
     private const int OpcionSalir = 9;
     private const int PrimeraOpcion = 1;
     private List<Producto> carta;
     private List<Producto> pedido;
+    string mensajeInput;
 
     public MenuPedido()
     {
@@ -192,8 +194,25 @@ public class MenuPedido
 
     public void BuscarProductoPorNombre()
     {
-        
+        mensajeInput = "Introduce el nombre del producto a buscar: ";
+        string nombreProducto = InputUtils.InputStringNoVacio(mensajeInput).ToLower().Trim();
+        bool encontrado = false;
 
+        foreach(var producto in carta)
+        {
+            if (producto.Nombre.ToLower().Equals(nombreProducto))
+            {
+                Producto productoEncontrado = producto;
+                productoEncontrado.MostrarDescripcion();
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado)
+        {
+            Console.WriteLine($"No se ha encontrado el producto {nombreProducto}");
+        }
     }
 
     public void BuscarProductosPorRangoPrecio()
