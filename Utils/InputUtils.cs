@@ -1,7 +1,23 @@
+using Models;
+
 namespace Utils;
 
 public class InputUtils
 {
+    public static int InputIntDentroRangoArray(string mensaje, List<Producto> lista)
+    {
+        int indice;
+
+        Console.Write(mensaje);
+
+        if (!int.TryParse(Console.ReadLine(), out indice) || indice < 0 || indice > lista.Count)
+            {
+                throw new ArgumentOutOfRangeException("Error: no hay ningún producto asociado a ese número");
+            }
+
+        return indice;
+        
+    }
     public static string InputStringNoVacio(string mensaje)
     {
         Console.Write(mensaje);

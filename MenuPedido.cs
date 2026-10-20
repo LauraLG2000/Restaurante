@@ -54,7 +54,7 @@ public class MenuPedido
 
             switch (opcion)
             {
-                case 1:
+                case PrimeraOpcion:
                     MostrarCarta();
                     break;
 
@@ -85,9 +85,9 @@ public class MenuPedido
                 case 8:
                     BuscarProductoMasCaro();
                     break;
-
-                default:
-                    Console.WriteLine("Introduce una opción válida");
+                
+                case OpcionSalir:
+                    Console.WriteLine("Programa cerrado.");
                     break;
             }
 
@@ -113,13 +113,9 @@ public class MenuPedido
         try
         {
             MostrarCarta();
-            int numeroProducto;
-            Console.WriteLine("Introduce el número del producto: ");
 
-            if (!int.TryParse(Console.ReadLine(), out numeroProducto) || numeroProducto < 0 || numeroProducto > carta.Count)
-            {
-                throw new ArgumentOutOfRangeException("Error: no hay ningún producto asociado a ese número");
-            }
+            mensajeInput = "Introduce el número del producto: ";
+            int numeroProducto = InputUtils.InputIntDentroRangoArray(mensajeInput, carta);
 
             pedido.Add(carta[numeroProducto - 1]);
         }
@@ -158,24 +154,27 @@ public class MenuPedido
 
     public void EliminarProductoDelPedido()
     {
-        int opcionProducto;
-
-        if (pedido.Count != 0)
+        try
         {
-            MostrarPedido();
-
-            Console.WriteLine("Introduce el número del producto a eliminar de la lista");
-            if (!int.TryParse(Console.ReadLine(), out opcionProducto) || opcionProducto < 1 || opcionProducto > pedido.Count)
+            if (pedido.Count != 0)
             {
-                throw new ArgumentOutOfRangeException("Error: Error: no hay ningún producto asociado a ese número.");
-            }
+                MostrarPedido();
 
-            pedido.RemoveAt(opcionProducto - 1);
+                mensajeInput = "Introduce el número del producto a eliminar del pedido: ";
+                int opcionProducto = InputUtils.InputIntDentroRangoArray(mensajeInput, pedido);
+
+                pedido.RemoveAt(opcionProducto - 1);
+            }
+            else
+            {
+                Console.WriteLine("El pedido está vacío.");
+            }
         }
-        else
+        catch (ArgumentOutOfRangeException aoore)
         {
-            Console.WriteLine("El pedido está vacío.");
+            Console.WriteLine(aoore.ToString());
         }
+
 
     }
 
