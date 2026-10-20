@@ -154,12 +154,30 @@ public class MenuPedido
 
     public void EliminarProductoDelPedido()
     {
-        
+        int opcionProducto;
+
+        if(pedido.Count != 0)
+        {
+            MostrarPedido();
+
+            Console.WriteLine("Introduce el número del producto a eliminar de la lista");
+            if(!int.TryParse(Console.ReadLine(), out opcionProducto) || opcionProducto < 1 || opcionProducto > pedido.Count)
+            {
+                throw new ArgumentOutOfRangeException("Error: Error: no hay ningún producto asociado a ese número.");
+            }
+
+            pedido.RemoveAt(opcionProducto - 1);
+        }
+        else
+        {
+            Console.WriteLine("El pedido está vacío.");
+        }
 
     }
 
     public void FinalizarPedido()
     {
+        
 
     }
 
