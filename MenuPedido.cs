@@ -128,11 +128,33 @@ public class MenuPedido
 
     public void MostrarPedido()
     {
+        decimal totalPrecio = 0;
+        int contador = 1;
 
+        if (pedido.Count != 0)
+        {
+            Console.WriteLine("\n====== PEDIDO ======");
+            Console.WriteLine("----------------------\n");
+
+            foreach (var producto in pedido)
+            {
+                Console.WriteLine($"{contador}. {producto.Nombre} - {producto.Precio}");
+                totalPrecio += producto.Precio;
+                contador++;
+            }
+
+            Console.WriteLine("\n----------------------");
+            Console.WriteLine($"TOTAL:  {totalPrecio}€");
+        }
+        else
+        {
+            Console.WriteLine("No hay productos registrados.");
+        }
     }
 
     public void EliminarProductoDelPedido()
     {
+        
 
     }
 
