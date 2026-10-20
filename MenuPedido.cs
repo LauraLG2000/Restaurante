@@ -145,6 +145,7 @@ public class MenuPedido
 
             Console.WriteLine("\n----------------------");
             Console.WriteLine($"TOTAL:  {totalPrecio}€");
+            Console.WriteLine($"Productos:  {pedido.Count}");
         }
         else
         {
@@ -156,12 +157,12 @@ public class MenuPedido
     {
         int opcionProducto;
 
-        if(pedido.Count != 0)
+        if (pedido.Count != 0)
         {
             MostrarPedido();
 
             Console.WriteLine("Introduce el número del producto a eliminar de la lista");
-            if(!int.TryParse(Console.ReadLine(), out opcionProducto) || opcionProducto < 1 || opcionProducto > pedido.Count)
+            if (!int.TryParse(Console.ReadLine(), out opcionProducto) || opcionProducto < 1 || opcionProducto > pedido.Count)
             {
                 throw new ArgumentOutOfRangeException("Error: Error: no hay ningún producto asociado a ese número.");
             }
@@ -177,12 +178,21 @@ public class MenuPedido
 
     public void FinalizarPedido()
     {
-        
-
+        if (pedido.Count != 0)
+        {
+            MostrarPedido();
+            Console.WriteLine("Gracias por su visita");
+            pedido.Clear();
+        }
+        else
+        {
+            Console.WriteLine("El pedido está vacío");
+        }
     }
 
     public void BuscarProductoPorNombre()
     {
+        
 
     }
 
