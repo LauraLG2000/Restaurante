@@ -194,35 +194,87 @@ public class MenuPedido
 
     public void BuscarProductoPorNombre()
     {
-        mensajeInput = "Introduce el nombre del producto a buscar: ";
-        string nombreProducto = InputUtils.InputStringNoVacio(mensajeInput).ToLower().Trim();
-        bool encontrado = false;
-
-        foreach(var producto in carta)
+        try
         {
-            if (producto.Nombre.ToLower().Equals(nombreProducto))
+            mensajeInput = "Introduce el nombre del producto a buscar: ";
+            string nombreProducto = InputUtils.InputStringNoVacio(mensajeInput).ToLower().Trim();
+            bool encontrado = false;
+
+            foreach (var producto in carta)
             {
-                Producto productoEncontrado = producto;
-                productoEncontrado.MostrarDescripcion();
-                encontrado = true;
-                break;
+                if (producto.Nombre.ToLower().Equals(nombreProducto))
+                {
+                    Producto productoEncontrado = producto;
+                    productoEncontrado.MostrarDescripcion();
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (!encontrado)
+            {
+                Console.WriteLine($"No se ha encontrado el producto {nombreProducto}");
             }
         }
-
-        if (!encontrado)
+        catch (ArgumentNullException ane)
         {
-            Console.WriteLine($"No se ha encontrado el producto {nombreProducto}");
+            Console.WriteLine(ane.ToString());
         }
     }
 
     public void BuscarProductosPorRangoPrecio()
     {
+        try
+        {
+            mensajeInput = "Introduce el precio máximo de la búsqueda: ";
+            decimal precioMaximo = InputUtils.InputDecimalMayorDeCero(mensajeInput);
 
+            List<Producto> cartaFiltrada = new List<Producto>();
+
+            foreach (var producto in carta)
+            {
+                if (producto.Precio <= precioMaximo)
+                {
+                    cartaFiltrada.Add(producto);
+                }
+            }
+
+            if (cartaFiltrada.Count != 0)
+            {
+                foreach (var producto in cartaFiltrada)
+                {
+                    producto.MostrarDescripcion();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"No hay productos por {precioMaximo} o menos");
+            }
+        }
+        catch (ArgumentOutOfRangeException aoore)
+        {
+            Console.WriteLine(aoore.ToString());
+        }
     }
 
     public void BuscarProductoMasCaro()
     {
+        decimal precioMaximo = 0.0m;
 
+        foreach (var producto in carta)
+        {
+            if (producto.Precio > precioMaximo)
+            {
+                precioMaximo = producto.Precio;
+            }
+        }
+
+        foreach (var producto in carta)
+        {
+            if (producto.Precio == precioMaximo)
+            {
+                producto.MostrarDescripcion();
+            }
+        }
     }
-
 }
