@@ -112,15 +112,16 @@ public class MenuPedido
     {
         try
         {
+            MostrarCarta();
             int numeroProducto;
             Console.WriteLine("Introduce el número del producto: ");
 
-            if (!int.TryParse(Console.ReadLine(), out numeroProducto) || numeroProducto < 0 || numeroProducto > pedido.Count)
+            if (!int.TryParse(Console.ReadLine(), out numeroProducto) || numeroProducto < 0 || numeroProducto > carta.Count)
             {
                 throw new ArgumentOutOfRangeException("Error: no hay ningún producto asociado a ese número");
             }
 
-            pedido.Add(carta[numeroProducto]);
+            pedido.Add(carta[numeroProducto - 1]);
         }
         catch (ArgumentOutOfRangeException aoore)
         {
